@@ -1,2 +1,2 @@
-# -jax-rs-jersey
+# jax-rs-jersey
 Atividade 2 JAX-RS com Jersey
