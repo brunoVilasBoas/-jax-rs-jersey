@@ -1,21 +1,25 @@
-package controllers;
+package com.javaee.bruno.controllers;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import objects.Veiculo;
-import service.VeiculoService;
-import service.VeiculoServiceImpl;
+import com.javaee.bruno.objects.Veiculo;
+import com.javaee.bruno.service.VeiculoService;
+import com.javaee.bruno.service.VeiculoServiceImpl;
 
 @Path("/Veiculos")
 @Produces(MediaType.APPLICATION_JSON)
@@ -23,12 +27,14 @@ import service.VeiculoServiceImpl;
 public class VeiculosController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(VeiculosController.class);
+	
 	private VeiculoService veiculoService;
 	
 	private VeiculosController() {
 		veiculoService = new VeiculoServiceImpl();
 	}
 	
+	//SERVIÇOS GET
 	//Retorna todos os Veiculos
 	@GET
 	public List<Veiculo> getAll() {
@@ -38,6 +44,7 @@ public class VeiculosController {
 		return veiculos;
 	}
 	
+	//Retorna Veiculos pelo id
 	@GET
 	@Path("{id : \\d+}")
 	public Response getById(@PathParam("id") Integer id) {
@@ -51,6 +58,21 @@ public class VeiculosController {
 		
 		return Response.ok(veiculo).build();
 	}
+	
+	//SERVIÇOS POST
+	@POST
+	public Response create(Veiculo veiculo, @Context UriInfo uriInfo) {
+		logger.info("create: {}", veiculo);
+		Veiculo veiculoSalvo = veiculoService.saveVeiculo(veiculo);
+		logger.debug("Veiculo criado com id = ", veiculoSalvo);
+		UriBuilder builder = uriInfo.getAbsolutePathBuilder();
+		builder.path(veiculoSalvo.getId().toString());
+		return Response.created(builder.build()).entity(veiculoSalvo).build();
+		
+	}
+	
+	
+	
 	
 	
 

@@ -1,10 +1,10 @@
-package service;
+package com.javaee.bruno.service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import objects.Veiculo;
+import com.javaee.bruno.objects.Veiculo;
 
 public class VeiculoServiceImpl implements VeiculoService {
 	

@@ -1,4 +1,4 @@
-package objects;
+package com.javaee.bruno.objects;
 
 public class Veiculo {
 	

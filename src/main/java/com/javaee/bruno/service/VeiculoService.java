@@ -1,8 +1,8 @@
-package service;
+package com.javaee.bruno.service;
 
 import java.util.List;
 
-import objects.Veiculo;
+import com.javaee.bruno.objects.Veiculo;
 
 public interface VeiculoService {
 	
