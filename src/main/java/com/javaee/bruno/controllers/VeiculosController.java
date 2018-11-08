@@ -2,8 +2,10 @@ package com.javaee.bruno.controllers;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,7 +23,7 @@ import com.javaee.bruno.objects.Veiculo;
 import com.javaee.bruno.service.VeiculoService;
 import com.javaee.bruno.service.VeiculoServiceImpl;
 
-@Path("/Veiculos")
+@Path("/veiculos")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class VeiculosController {
@@ -30,7 +32,7 @@ public class VeiculosController {
 	
 	private VeiculoService veiculoService;
 	
-	private VeiculosController() {
+	public VeiculosController() {
 		veiculoService = new VeiculoServiceImpl();
 	}
 	
@@ -71,9 +73,25 @@ public class VeiculosController {
 		
 	}
 	
-	
-	
-	
-	
-
+	//SERVIÇOS PUT
+	@PUT
+    @Path("/{id : \\d+}")
+    public Response update(@PathParam("id") Integer id, Veiculo veiculo) {
+        logger.info("Veiculo ID: {} ", id, veiculo);
+        Veiculo veiculoSalvo = veiculoService.findById(id);
+        if (veiculoSalvo == null) {
+        	return Response.status(Status.NOT_FOUND).build();
+        }
+        veiculoSalvo = veiculoService.saveVeiculo(veiculo);
+        return Response.ok().entity(veiculoSalvo).build();
+    }
+    
+	//SERVIÇOS DELETE
+    @DELETE
+    @Path("/{id : \\d+}")
+    public Response delete(@PathParam("id") Integer id) {
+    	logger.info("Veiculo ID: {} ", id);
+    	veiculoService.deleteById(id);
+    	return Response.noContent().build();
+    }
 }
